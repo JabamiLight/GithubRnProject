@@ -2,7 +2,7 @@
  * Created by guoshikeji on 17/4/7.
  */
 
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {
     AppRegistry,
     StyleSheet,
@@ -13,6 +13,13 @@ import {
 } from 'react-native';
 
 export default class NavigationBar extends Component {
+
+    //属性验证
+    static propTypes = {
+        rightButton: PropTypes.element,
+        leftButton: PropTypes.element,
+    }
+
     render() {
         return <View >
             <View style={styles.statusBar}>
@@ -23,35 +30,48 @@ export default class NavigationBar extends Component {
                 />
             </View>
             <View style={styles.navBtn}>
-                <View style={styles.rightIcon}/>
-                <Text style={styles.textWrapper}>热门</Text>
-                <View style={{flexDirection:"row",paddingRight:10}}>
-                    <Image style={styles.rightIcon} source={require("../../res/images/ic_search_white_48pt.png")}></Image>
-                    <Image style={styles.rightIcon} source={require("../../res/images/ic_more_vert_white_48pt.png")}></Image>
+                <View style={styles.leftBtn}>{this.props.leftButton}</View>
+                <Text style={styles.textWrapper}>{this.props.title}</Text>
+                <View style={styles.rightBtn}>
+                    {this.props.rightButton}
                 </View>
             </View>
         </View>
     }
 }
 const styles = StyleSheet.create({
-    statusBar:{
-        height:21
+    statusBar: {
+        height: 21
     },
     navBtn: {
-        justifyContent:"space-between",
+        justifyContent: "space-between",
         flexDirection: "row",
-        alignItems:"center",
-        backgroundColor:"#63B8FF",
-        paddingTop:10,
-        paddingBottom:10
+        alignItems: "center",
+        backgroundColor: "#63B8FF",
+        paddingTop: 10,
+        paddingBottom: 8
     },
-    textWrapper:{
-        fontSize:22,
-        color:"#fff"
+    textWrapper: {
+        fontSize: 20,
+        color: "#fff"
     },
-    rightIcon:{
-        height:25,
-        width:25
+    rightIcon: {
+        height: 25,
+        width: 25,
+    },
+    leftBtn: {
+        flexDirection: "row",
+        alignItems: "center",
+        width: 50,
+        marginLeft: 10,
+    },
+    rightBtn: {
+        flexDirection: "row",
+        width: 50,
+        marginRight: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#0000"
     }
 
 });

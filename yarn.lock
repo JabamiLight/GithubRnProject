@@ -2924,11 +2924,25 @@ react-devtools-core@^2.0.8:
     cross-env "^3.1.4"
     ws "^2.0.3"
 
+react-native-check-box@^1.0.4:
+  version "1.0.4"
+  resolved "http://registry.npm.taobao.org/react-native-check-box/download/react-native-check-box-1.0.4.tgz#228507af6df59fa07b334dfd569aeb709e9ca1e6"
+
+react-native-easy-toast@^1.0.5:
+  version "1.0.5"
+  resolved "http://registry.npm.taobao.org/react-native-easy-toast/download/react-native-easy-toast-1.0.5.tgz#01600a4075f45c549d61427fe48dd2edbb98628e"
+
 react-native-scrollable-tab-view@^0.7.4:
   version "0.7.4"
   resolved "http://registry.npm.taobao.org/react-native-scrollable-tab-view/download/react-native-scrollable-tab-view-0.7.4.tgz#623a047cbfab35a27b8689095af524e9aac74b62"
   dependencies:
     react-static-container "^1.0.1"
+    react-timer-mixin "^0.13.3"
+
+react-native-sortable-listview@^0.2.2:
+  version "0.2.2"
+  resolved "http://registry.npm.taobao.org/react-native-sortable-listview/download/react-native-sortable-listview-0.2.2.tgz#f0405ddc52b3dda5e7faaac8314068a1734a0773"
+  dependencies:
     react-timer-mixin "^0.13.3"
 
 react-native-tab-navigator@^0.3.3:
