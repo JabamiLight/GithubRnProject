@@ -10,7 +10,8 @@ import {
     Image,
     TouchableOpacity,
     AsyncStorage,
-    Alert
+    Alert,
+    DeviceEventEmitter
 
 } from 'react-native';
 
@@ -108,6 +109,7 @@ export default class CustomKeyPage extends Component {
             .then(() => {
                 this.refs.toast.show("保存成功");
                 this.doBack();
+                DeviceEventEmitter.emit('HOMEPAGE_RELOAD','HomePage重新加载');
             });
     }
 
@@ -128,7 +130,6 @@ export default class CustomKeyPage extends Component {
 
     getNavLeftBtn() {
         return <View>
-
             <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={this.handleBack}
@@ -158,6 +159,7 @@ export default class CustomKeyPage extends Component {
         AsyncStorage.getItem("custom_key")
             .then((value) => {
                 if (value !== null) {
+                    console.log(value);
                     this.setState({data: JSON.parse(value)});
                 }
                 this.originData = ArraysUtils.clone(this.state.data);

@@ -11,21 +11,30 @@ import {
     Image,
     ListView,
     RefreshControl,
-    TouchableOpacity
+    TouchableOpacity,
+    AsyncStorage,
+    PanResponder,
+    DeviceEventEmitter
 } from 'react-native';
 
 
 import NavigationBar from "../../js/component/NavigationBar"
 import ScrollableTabView from "react-native-scrollable-tab-view"
-import ProjectRow from "../component/ProjectRow"
+import PopularProjectRow from "../component/PopularProjectRow"
+import ProjectDetails from './ProjectDetails'
 
-export default class PopularPage extends Component {
+var popular_def_lans = require('../../res/data/popular_def_lans.json');
+
+export default class  PopularPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            languages: ["Android", "IOS", "Java", "React", "JS"]
+            languages: []
         }
+        popular_def_lans.forEach(item =>{
+            if(item.checked) this.state.languages.push(item);
+        });
     }
 
     getNavBtn = () => {
@@ -55,17 +64,36 @@ export default class PopularPage extends Component {
             />
             <ScrollableTabView
                 tabBarBackgroundColor="#63B8FF"
-                tabBarActiveTextColor="#fff"
-                tabBarInactiveTextColor="#F5FFFA"
+                tabBarActiveTextColor="white"
+                tabBarInactiveTextColor="rgba(255,255,255,0.5)"
                 tabBarUnderlineStyle={{backgroundColor:"#E7E7E7",height:2}}>
                 {
-                    this.state.languages.map((item, i) => {
-                        return <PopularTabe key={`tabs${i}`} tabLabel={item}/>
+                    this.state.languages.map((item,i)=>{
+                        return (item.checked == undefined || item.checked) ? <PopularTabe {...this.props} key={`tab${i}`} tabLabel={item.name}/> : null;
                     })
                 }
-
             </ScrollableTabView>
         </View>;
+    }
+
+    //加载用户设置的语言分类数据
+    loadLanguages = () => {
+        AsyncStorage.getItem('custom_key')
+            .then((value) => {
+                if (value != null) {
+                    this.setState({languages: JSON.parse(value)});
+                }
+            });
+    }
+
+    componentWillMount=()=>{
+
+    }
+    componentDidMount = () => {
+        //读取数据
+        this.loadLanguages();
+
+
     }
 
 
@@ -86,15 +114,21 @@ class PopularTabe extends Component {
         tabLabel: "Android"
     }
 
+    handProjectRowSelected=(obj)=>{
+        this.props.navigator.push({
+            component:ProjectDetails,
+            params:{title:obj.full_name,url:obj.html_url}
+        });
+    }
+
     renderRow = (item) => {
-        return <ProjectRow item={item}></ProjectRow>
+        return <PopularProjectRow  item={item} selected={()=>this.handProjectRowSelected(item)}></PopularProjectRow>
     }
     _onRefresh = () => {
         this.loadData();
     }
 
     loadData = () => {
-        console.log(this.props.tabLabel);
         this.setState({isRefreshing: true});
         fetch(`https://api.github.com/search/repositories?q=${this.props.tabLabel}&sort=stars`)
             .then((response) => response.json())
@@ -119,12 +153,12 @@ class PopularTabe extends Component {
 
         return <View style={styles.container}>
             <ListView
+                ref="ListView"
                 enableEmptySections={true}
                 dataSource={this.state.dataSource}
                 renderRow={this.renderRow}
                 refreshControl={
                 <RefreshControl
-
                     refreshing={this.state.isRefreshing}
                     onRefresh={this._onRefresh}
                     tintColor="#63B8FF"
@@ -139,7 +173,7 @@ class PopularTabe extends Component {
     }
 
     componentDidMount = () => {
-        this.loadData();
+        // this.loadData();
     }
 
 

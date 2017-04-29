@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+GitHubTrending@^2.0.0:
+  version "2.0.0"
+  resolved "http://registry.npm.taobao.org/GitHubTrending/download/GitHubTrending-2.0.0.tgz#8a5176b9b4c3b8a42e930e384a6f8cba2331e0e1"
+
 abab@^1.0.3:
   version "1.0.3"
   resolved "http://registry.npm.taobao.org/abab/download/abab-1.0.3.tgz#b81de5f7274ec4e756d797cd834f303642724e5d"
@@ -2944,6 +2948,10 @@ react-native-sortable-listview@^0.2.2:
   resolved "http://registry.npm.taobao.org/react-native-sortable-listview/download/react-native-sortable-listview-0.2.2.tgz#f0405ddc52b3dda5e7faaac8314068a1734a0773"
   dependencies:
     react-timer-mixin "^0.13.3"
+
+react-native-splash-screen@^2.0.0:
+  version "2.0.0"
+  resolved "http://registry.npm.taobao.org/react-native-splash-screen/download/react-native-splash-screen-2.0.0.tgz#d03caaef7d92a0ac1eab60ee4204a1d6bf8234ec"
 
 react-native-tab-navigator@^0.3.3:
   version "0.3.3"

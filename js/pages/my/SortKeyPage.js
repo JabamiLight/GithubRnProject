@@ -11,28 +11,32 @@ import {
     TouchableOpacity,
     AsyncStorage,
     Alert,
-    TouchableHighlight
-
+    TouchableHighlight,
+    DeviceEventEmitter
 } from 'react-native';
 
 import NavigatorBar from '../../component/NavigationBar'
 import SortableListView from "react-native-sortable-listview";
-
 import CheckBox from 'react-native-check-box'
 import Toast from 'react-native-easy-toast'
 import ArraysUtils from '../../component/ArraysUtils'
+var popular_def_lans = require('../../../res/data/popular_def_lans.json');
 
 export default class SortKeyPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
+            originData: popular_def_lans
         };
+        this.state.originData.forEach(item => {
+            if (item.checked) this.state.data.push(item);
+        });
     }
 
 
     handleBack = () => {
-        if (ArraysUtils.isAbsEqual(this.state.data, this.originData)) {
+        if (ArraysUtils.isAbsEqual(this.state.data, this.unSortedData)) {
             this.doBack();
             return;
         }
@@ -55,10 +59,24 @@ export default class SortKeyPage extends Component {
 
     }
     handleSave = () => {
-        AsyncStorage.setItem('custom_key', JSON.stringify(this.state.data))
+        let originArray = this.state.originData;
+        let sortedArray = this.state.data;
+        let savedArray = [];
+        for(var i = 0, j = 0; i < originArray.length; i++){
+            var item = originArray[i];
+            if(item.checked){
+                savedArray[i] = sortedArray[j];
+                j++;
+                console.log(j);
+            }else{
+                savedArray[i] = item;
+            }
+        }
+        AsyncStorage.setItem('custom_key', JSON.stringify(savedArray))
             .then(() => {
                 this.refs.toast.show("保存成功");
                 this.doBack();
+                DeviceEventEmitter.emit('HOMEPAGE_RELOAD', 'HomePage重新加载');
             });
     }
 
@@ -98,7 +116,6 @@ export default class SortKeyPage extends Component {
                 </Image>
             </TouchableOpacity>
         </View>
-
     }
 
     getNavRightBtn() {
@@ -118,9 +135,15 @@ export default class SortKeyPage extends Component {
         AsyncStorage.getItem("custom_key")
             .then((value) => {
                 if (value !== null) {
-                    this.setState({data: JSON.parse(value)});
+                    let origin = JSON.parse(value);
+
+                    let d = [];
+                    origin.forEach((item) => {
+                        if (item.checked) d.push(item);
+                    });
+                    this.setState({originData:origin,data: d});
+                    this.unSortedData=ArraysUtils.clone(d);
                 }
-                // this.originData = ArraysUtils.clone(this.state.data);
             })
     }
 }

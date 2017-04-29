@@ -8,3 +8,5 @@ import {
 import setup from "./js/pages/Setup"
 
 AppRegistry.registerComponent('GithubProJect', ()=>setup);
+
+

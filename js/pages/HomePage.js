@@ -13,12 +13,17 @@ import {
     StyleSheet,
     Text,
     View,
-    Image
+    Image,
+    DeviceEventEmitter,
+    AsyncStorage
 } from 'react-native';
 
 import TabNavigator from 'react-native-tab-navigator';
 import PopularPage from './PopularPage'
 import MyPage from './my/MyPage'
+import TrendingPages from './TrendingPages'
+import SplashScreen from 'react-native-splash-screen';
+
 export default class HomePage extends Component {
     constructor(props) {
         super(props);
@@ -28,7 +33,6 @@ export default class HomePage extends Component {
     }
 
     render() {
-
         return (
             <View style={styles.container}>
                 <TabNavigator>
@@ -43,7 +47,7 @@ export default class HomePage extends Component {
                                    source={require('../../res/images/ic_popular.png')}/>}
                         onPress={() => this.setState({selectedTab: "popular"})}
                     >
-                        <PopularPage/>
+                        <PopularPage {...this.props}/>
                         {/*<View style={{backgroundColor: '#00F', flex: 1}}></View>*/}
 
                     </TabNavigator.Item>
@@ -58,7 +62,7 @@ export default class HomePage extends Component {
                                    source={require('../../res/images/ic_trending.png')}/>}
                         onPress={() => this.setState({selectedTab: "trending"})}
                     >
-                        <View style={{backgroundColor: '#00F', flex: 1}}></View>
+                        <TrendingPages {...this.props}></TrendingPages>
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         title="收藏"
@@ -91,6 +95,21 @@ export default class HomePage extends Component {
                 </TabNavigator>
             </View>
         );
+    }
+
+    componentDidMount() {
+        SplashScreen.hide();
+        // AsyncStorage.clear();
+        this.listener = DeviceEventEmitter.addListener("HOMEPAGE_RELOAD", (n) => {
+            this.props.navigator.resetTo({
+                component: HomePage
+            });
+        });
+
+    }
+
+    componentDidUnMount() {
+        this.listener.remove();
     }
 }
 

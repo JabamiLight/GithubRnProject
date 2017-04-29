@@ -18,7 +18,7 @@ export  default function setup() {
 
         renderScene=(route,navigator)=>{
             let Target =route.component;
-            return <Target navigator={navigator}></Target>
+            return <Target {...route.params} navigator={navigator}></Target>
 
         }
 

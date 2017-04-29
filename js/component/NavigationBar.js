@@ -18,6 +18,16 @@ export default class NavigationBar extends Component {
     static propTypes = {
         rightButton: PropTypes.element,
         leftButton: PropTypes.element,
+        titleView: PropTypes.element,
+    }
+    static defaultProps = {
+        title: ""
+    }
+
+    renderTitel = () => {
+        let view = this.props.title.length != 0 ? <Text style={styles.textWrapper}>{this.props.title}</Text>
+            : this.props.titleView;
+        return view;
     }
 
     render() {
@@ -31,7 +41,7 @@ export default class NavigationBar extends Component {
             </View>
             <View style={styles.navBtn}>
                 <View style={styles.leftBtn}>{this.props.leftButton}</View>
-                <Text style={styles.textWrapper}>{this.props.title}</Text>
+                {this.renderTitel()}
                 <View style={styles.rightBtn}>
                     {this.props.rightButton}
                 </View>
@@ -52,7 +62,7 @@ const styles = StyleSheet.create({
         paddingBottom: 8
     },
     textWrapper: {
-        fontSize: 20,
+        fontSize: 16,
         color: "#fff"
     },
     rightIcon: {
@@ -70,7 +80,7 @@ const styles = StyleSheet.create({
         width: 50,
         marginRight: 10,
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-end",
         backgroundColor: "#0000"
     }
 
